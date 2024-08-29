@@ -1,0 +1,31 @@
+{
+  "name": "create-krew",
+  "module": "index.ts",
+  "type": "module",
+  "version": "0.0.12",
+  "bin": {
+    "krew": "./index.ts"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "bun build index.ts --target=bun --outdir=out && cp server.ts ./out/server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^7.7.2",
+    "bun": "^1.1.24",
+    "chalk": "^5.3.0",
+    "libsodium-wrappers": "^0.7.14",
+    "octokit": "^3.2.0",
+    "open": "^10.1.0",
+    "vercel": "^34.2.0"
+  },
+  "repository": "git@github.com:Cspeisman/krew.git",
+  "author": "cspeisman <cspeisman@gmail.com>",
+  "license": "MIT"
+}
