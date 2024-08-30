@@ -19,13 +19,13 @@ export class VercelService {
     }
   }
 
-  async createProject(name: string, repo: string) {
+  async createProject(name: string, repo: string, framework: string) {
     const response = await fetch(`${this.baseUrl}/v10/projects`, {
       headers: this.getHeaders(),
       method: "post",
       body: JSON.stringify({
         name,
-        framework: 'astro',
+        framework,
         gitRepository: {
           type: "github",
           repo

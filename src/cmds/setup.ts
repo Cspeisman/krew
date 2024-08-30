@@ -32,7 +32,10 @@ export const setup = async (name?: string, framework?: string) => {
 
   await frameworkService.initializeProject(name);
   $.cwd(name);
-  // await localAstroService.addVercelAdapter();
+
+  if (frameworkService.installAdditionalDependencies) {
+    await frameworkService.installAdditionalDependencies();
+  }
   await frameworkService.addTestingFrameworks(`${process.cwd()}/${name}`);
   await githubService.createRepo(name);
 
@@ -41,9 +44,10 @@ export const setup = async (name?: string, framework?: string) => {
   if (!vercelService.token) {
     console.error('error: sorry we had trouble finding the token to call vercel')
   } else {
-    await vercelService.createProject(name, `${githubService.username}/${name}`)
+    await vercelService.createProject(name, `${githubService.username}/${name}`, framework ?? 'astro')
     const projectBypassSecret = await vercelService.bypassAutomationProtection();
     await $`rsync -a ${import.meta.dir}/../../templates/ ./`;
+    frameworkService.replacePlaceholders(`${process.cwd()}/${name}`);
     await githubService.createSecrets(name, [
       {
         secretName: 'VERCEL_ORG_ID',
