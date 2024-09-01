@@ -7,12 +7,15 @@ import {LocalRemixService} from "../frameworks/LocalRemixService.ts";
 import {GithubService} from "../github/GithubService.ts";
 import {LocalAstroService} from "../frameworks/LocalAstroService.ts";
 import type {FrameworkService} from "../frameworks/FrameworkService.ts";
+import {LocalNextjsService} from "../frameworks/LocalNextjsService.ts";
 
 export const setup = async (name?: string, framework?: string) => {
   const packageManager = determinePackageManager();
   let frameworkService: FrameworkService;
   if (framework && framework === 'remix') {
     frameworkService = new LocalRemixService(packageManager);
+  } else if (framework && framework === 'nextjs'){
+    frameworkService = new LocalNextjsService(packageManager);
   } else {
     frameworkService = new LocalAstroService(packageManager);
   }

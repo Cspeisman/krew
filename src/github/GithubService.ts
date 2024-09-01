@@ -4,6 +4,7 @@ import {$, spawn} from "bun";
 import {encrypt} from "./encrypt";
 import * as console from "node:console";
 import chalk from "chalk";
+import {existsSync} from 'node:fs';
 
 export class GithubService {
   accessToken = '';
@@ -61,6 +62,10 @@ export class GithubService {
   }
 
   push = async (repo: string) => {
+    const pwd = await $`pwd`.text();
+    if (!existsSync(`${pwd}/.git`)) {
+      await $`git init`;
+    }
     await $`git remote add origin https://${this.username}:${this.accessToken}@github.com/${this.username}/${repo}.git`;
     await $`git add . && git commit -m "initial commit"`
     await $`git push -f origin main`
