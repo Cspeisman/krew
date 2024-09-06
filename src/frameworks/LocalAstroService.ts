@@ -1,4 +1,4 @@
-import type {PackageManager} from "../PackageManager.ts";
+import type {PackageManager} from "../utils/PackageManager.ts";
 import {$, spawn} from "bun";
 import type {FrameworkService} from "./FrameworkService.ts";
 import {replacePlaceholder} from "../utils/replacePlaceholder.ts";

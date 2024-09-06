@@ -1,6 +1,6 @@
 import type {FrameworkService} from "./FrameworkService.ts";
 import {$, spawn} from "bun";
-import type {PackageManager} from "../PackageManager.ts";
+import type {PackageManager} from "../utils/PackageManager.ts";
 import {makeRaw} from "./LocalAstroService.ts";
 import {replacePlaceholder} from "../utils/replacePlaceholder.ts";
 

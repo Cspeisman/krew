@@ -4,7 +4,7 @@
   "type": "module",
   "version": "0.0.18",
   "bin": {
-    "krew": "./index.ts"
+    "create-krew": "./index.ts"
   },
   "scripts": {
     "start": "bun run index.ts",

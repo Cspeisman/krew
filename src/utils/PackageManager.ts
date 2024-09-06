@@ -29,7 +29,7 @@ class Yarn implements PackageManager {
   name: 'yarn' = 'yarn'
 
   create() {
-    return 'yarn init -y';
+    return 'yarn create';
   }
 
   npx(command: string, args: string): string {
@@ -45,7 +45,7 @@ class PNPM implements PackageManager {
   name: 'pnpm' = 'pnpm';
 
   create() {
-    return 'pnpm init'
+    return 'pnpm create'
   }
 
   npx(command: string, args: string) {

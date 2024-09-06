@@ -1,4 +1,4 @@
-import type {PackageManager} from "../PackageManager.ts";
+import type {PackageManager} from "../utils/PackageManager.ts";
 import {$, spawn} from "bun";
 import {makeRaw} from "./LocalAstroService.ts";
 import type {FrameworkService} from "./FrameworkService.ts";
