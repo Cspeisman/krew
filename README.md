@@ -1,43 +1,61 @@
 # create-krew
 
-A CLI tool to quickly set up an Astro project with GitHub repository, Vercel deployment, and CI/CD pipeline.
+A CLI tool to quickly scaffold your project's infrastructure. It streamlines the setup process by automating the creation of GitHub repositories, Vercel deployments, and CI/CD pipelines.
 
+## Features
+- ✅ Supports popular frameworks: astro, remix, and nextjs
+- ✅ Initializes a GitHub repository
+- ✅ Deploys the application to Vercel (supports astro by default)
+- ✅ Sets up GitHub Actions for CI/CD
+- ✅ Easily tears down the application with the same speed as scaffolding
 
 ## Usage
 
 To create a new project, run:
-`npm create krew@latest your-project-name`
 
-Replace `your-project-name` with the desired name for your project.
+```bash
+npm create krew@latest your-project-name --framework astro
+```
 
 
-## Features
+### CLI Flags
 
-- ✅ Creates a new Astro application
-- ✅ Initializes a GitHub repository
-- ✅ Deploys the Astro application to Vercel
-- ✅ Sets up a CI/CD pipeline using GitHub Actions
+May be provided in place of prompts
 
-## Prerequisites
-- GitHub account
-- Vercel account
-- node version 18.x and up
+| Name                      | Description                                                                                                                           |
+|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
+| `--help` (`-h`)           | Display available flags.                                                                                                              |
+| `--framework <framework>` | Specify your framework of choice (options: `astro`/`remix`/`nextjs`)                                                                  |
+| `--destroy`               | Tears down the entire application. Deletes github repository<br/> and deletes vercel project. CAUTION: THIS IS IRREVERSIBLE           |
+
 
 ## What it does
+1. Scaffolds a new project using the selected framework.
+2. Initializes a local Git repository.
+3. Creates a remote repository on GitHub.
+4. Sets up GitHub Actions for continuous integration and deployment (CI/CD).
+   - Includes unit tests and end-to-end (E2E) tests, running against preview deploys.
+5. Deploys the application to Vercel.
 
-1. Creates a new Astro project
-2. Initializes a Git repository
-3. Creates a new repository on GitHub
-4. Sets up GitHub Actions for CI/CD
-   1. includes unit tests
-   2. e2e tests that test against the preview deploy
-5. Deploys the application to Vercel
 
-## Configuration
+## Prerequisites
+Before using create-krew, ensure you have the following:
+- A GitHub account
+- A Vercel account
+- Node.js version 18.x or higher
 
-During the setup process, you'll be prompted to:
-- Sign into github and authenticate Krew Oauth app
-- Sign into Vercel if you haven't already from your local machine
+## Setup Process
+During setup, you'll be prompted to:
+- Sign into GitHub and authenticate the Krew OAuth app.
+- Sign into Vercel, if you haven't done so already.
+
+## Teardown
+To remove all resources created by create-krew, use the `--destroy` flag:
+
+```bash
+create-krew --destroy
+```
+**Warning**: This action is irreversible and will delete your GitHub repository and Vercel project.
 
 ## Contributing
 

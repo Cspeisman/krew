@@ -23,10 +23,6 @@ export const setup = async (name?: string, framework?: string) => {
 
   let githubService = new GithubService();
 
-  if (!name) {
-    console.log("no name was provided")
-    process.exit(1);
-  }
 
   if (fs.existsSync(name)) {
     console.log("Looks like a project already exists with this name. Please choose a new name");

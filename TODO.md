@@ -1,10 +1,8 @@
 --- Prioritized List of Items ---
-- [X] use user_agent to determine which package manager is being used
-  - [X] use correspond package manager for all installation and inits
-  - [ ] use correct package manager in github action
-- [ ] teardown project
+- [ ] require name is buggy when you just pass -- or --framework
+- [ ] update docs
 - [ ] More frameworks
-    - [ ] remix
-    - [ ] next.js
+    - [X] remix
+    - [X] next.js
     - [ ] sveltekit
     - [ ] solidstart
