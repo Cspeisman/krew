@@ -14,7 +14,7 @@ A CLI tool to quickly scaffold your project's infrastructure. It streamlines the
 To create a new project, run:
 
 ```bash
-npm create krew@latest your-project-name --framework astro
+npm create krew@latest your-project-name -- --framework astro
 ```
 
 
@@ -50,7 +50,7 @@ During setup, you'll be prompted to:
 - Sign into Vercel, if you haven't done so already.
 
 ## Teardown
-To remove all resources created by create-krew, use the `--destroy` flag:
+To remove all resources created by create-krew, use the `--destroy` flag from within the root directory of your project:
 
 ```bash
 create-krew --destroy
