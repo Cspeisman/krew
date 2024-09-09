@@ -1,8 +1,8 @@
 #! /usr/bin/env bun
-import {teardown} from "./src/cmds/teardown.ts";
-import {getArgValue, help} from "./src/utils/cliHelpers.ts";
+import {teardown} from "./src/cmds/teardown";
+import {getArgValue, help} from "./src/utils/cliHelpers";
 import {createSelection} from "bun-promptx";
-import {setup} from "./src/cmds/setup.ts";
+import {setup} from "./src/cmds/setup";
 
 const hasDestroyFlag = Bun.argv.includes("--destroy");
 const hasHelpFlag = Bun.argv.includes("-h") || Bun.argv.includes("--h");
@@ -25,6 +25,7 @@ if (hasDestroyFlag) {
       {text: 'astro'},
       {text: 'remix' },
       {text: 'nextjs'},
+      {text: 'svelte'},
     ];
     const {selectedIndex} = createSelection(frameworks, {
        headerText: "Select your framework"

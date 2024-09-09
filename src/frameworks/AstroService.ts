@@ -1,11 +1,11 @@
-import type {PackageManager} from "../utils/PackageManager.ts";
+import type {PackageManager} from "../utils/PackageManager";
 import {$, spawn} from "bun";
-import type {FrameworkService} from "./FrameworkService.ts";
-import {replacePlaceholder} from "../utils/replacePlaceholder.ts";
+import type {FrameworkService} from "./FrameworkService";
+import {replacePlaceholder} from "../utils/replacePlaceholder";
 
 export const makeRaw = (command: string) => ({raw: command})
 
-export class LocalAstroService implements FrameworkService {
+export class AstroService implements FrameworkService {
   constructor(private packageManager: PackageManager) {
   }
 

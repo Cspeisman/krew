@@ -1,30 +1,33 @@
-import fs from "node:fs";
+import {existsSync} from "node:fs";
 import {$} from "bun";
 import chalk from "chalk";
-import {determinePackageManager} from "../utils/PackageManager.ts";
-import {VercelService} from "../vercel/VercelService.ts";
-import {LocalRemixService} from "../frameworks/LocalRemixService.ts";
-import {GithubService} from "../github/GithubService.ts";
-import {LocalAstroService} from "../frameworks/LocalAstroService.ts";
-import type {FrameworkService} from "../frameworks/FrameworkService.ts";
-import {LocalNextjsService} from "../frameworks/LocalNextjsService.ts";
+import {determinePackageManager} from "../utils/PackageManager";
+import {VercelService} from "../vercel/VercelService";
+import {RemixService} from "../frameworks/RemixService";
+import {GithubService} from "../github/GithubService";
+import {AstroService} from "../frameworks/AstroService";
+import type {FrameworkService} from "../frameworks/FrameworkService";
+import {NextjsService} from "../frameworks/NextjsService";
+import {SvelteKitService} from "../frameworks/SvelteKitService";
 
-export const setup = async (name?: string, framework?: string) => {
+export const setup = async (name: string, framework?: string) => {
   const packageManager = determinePackageManager();
   let frameworkService: FrameworkService;
   if (framework && framework === 'remix') {
-    frameworkService = new LocalRemixService(packageManager);
+    frameworkService = new RemixService(packageManager);
   } else if (framework && framework === 'nextjs'){
-    frameworkService = new LocalNextjsService(packageManager);
+    frameworkService = new NextjsService(packageManager);
+  } else if (framework && framework === 'svelte'){
+    frameworkService = new SvelteKitService(packageManager);
   } else {
-    frameworkService = new LocalAstroService(packageManager);
+    frameworkService = new AstroService(packageManager);
   }
   let vercelService = new VercelService();
 
   let githubService = new GithubService();
 
 
-  if (fs.existsSync(name)) {
+  if (existsSync(name)) {
     console.log("Looks like a project already exists with this name. Please choose a new name");
     process.exit(1);
   }

@@ -1,17 +1,19 @@
-import type {PackageManager} from "../utils/PackageManager.ts";
+import type {FrameworkService} from "./FrameworkService";
 import {$, spawn} from "bun";
-import {makeRaw} from "./LocalAstroService.ts";
-import type {FrameworkService} from "./FrameworkService.ts";
-import {replacePlaceholder} from "../utils/replacePlaceholder.ts";
+import type {PackageManager} from "../utils/PackageManager";
+import {makeRaw} from "./AstroService";
 
-export class LocalRemixService implements FrameworkService {
-  constructor(private packageManager: PackageManager) {
+export class SvelteKitService implements FrameworkService {
+  private packageManager: PackageManager;
+
+  constructor(packageManager: PackageManager) {
+    this.packageManager = packageManager;
   }
 
   async initializeProject(name: string) {
     const createCommand = this.packageManager.create().split(' ');
     const latestFlag = this.packageManager.name === 'npm' ? '@latest' : '';
-    const childProc = spawn([...createCommand, `remix${latestFlag}`, name, '--', '--yes'], {
+    const childProc = spawn([...createCommand, `svelte${latestFlag}`, name, '--', '--git', '--install'], {
       stdin: "inherit",
       stdout: "inherit",
     });
@@ -34,8 +36,12 @@ export class LocalRemixService implements FrameworkService {
     await Bun.write(`${path}/package.json`, JSON.stringify(packageJson, null, 2));
   }
 
-
   replacePlaceholders(projectPath: string) {
-    replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, 'Remix')
+
   }
+
+  async installAdditionalDependencies() {
+    await $`${makeRaw(`${this.packageManager.name} install`)}`;
+  }
+
 }

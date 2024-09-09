@@ -1,10 +1,10 @@
-import type {FrameworkService} from "./FrameworkService.ts";
+import type {FrameworkService} from "./FrameworkService";
 import {$, spawn} from "bun";
-import type {PackageManager} from "../utils/PackageManager.ts";
-import {makeRaw} from "./LocalAstroService.ts";
-import {replacePlaceholder} from "../utils/replacePlaceholder.ts";
+import type {PackageManager} from "../utils/PackageManager";
+import {makeRaw} from "./AstroService";
+import {replacePlaceholder} from "../utils/replacePlaceholder";
 
-export class LocalNextjsService implements FrameworkService {
+export class NextjsService implements FrameworkService {
     constructor(private packageManager: PackageManager) {
     }
 
