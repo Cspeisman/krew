@@ -1,4 +1,5 @@
 --- Prioritized List of Items --- 
+- [ ] svelte add testing framework fails due to access issues?
 - [ ] More frameworks
     - [X] remix
     - [X] next.js

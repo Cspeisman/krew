@@ -53,8 +53,15 @@ During setup, you'll be prompted to:
 To remove all resources created by create-krew, use the `--destroy` flag from within the root directory of your project:
 
 ```bash
-create-krew --destroy
+npm create krew@latest -- --destroy
 ```
+or
+
+```bash
+npx create-krew --destroy
+```
+
+
 **Warning**: This action is irreversible and will delete your GitHub repository and Vercel project.
 
 ## Contributing
