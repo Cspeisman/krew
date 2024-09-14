@@ -35,8 +35,8 @@ export const setup = async (name: string, framework?: string) => {
   await frameworkService.initializeProject(name);
   $.cwd(name);
 
-  if (frameworkService.installAdditionalDependencies) {
-    await frameworkService.installAdditionalDependencies();
+  if (frameworkService.postCreateActions) {
+    await frameworkService.postCreateActions();
   }
   await frameworkService.addTestingFrameworks(`${process.cwd()}/${name}`);
   await githubService.createRepo(name);

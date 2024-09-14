@@ -1,8 +1,6 @@
---- Prioritized List of Items ---
-- [ ] require name is buggy when you just pass -- or --framework
-- [ ] update docs
+--- Prioritized List of Items --- 
 - [ ] More frameworks
     - [X] remix
     - [X] next.js
-    - [ ] sveltekit
+    - [X] sveltekit
     - [ ] solidstart

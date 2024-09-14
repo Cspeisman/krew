@@ -1,12 +1,13 @@
 import type {PackageManager} from "../utils/PackageManager";
 import {$, spawn} from "bun";
-import type {FrameworkService} from "./FrameworkService";
+import {BaseFrameworkService, type FrameworkService, makeRaw} from "./FrameworkService";
 import {replacePlaceholder} from "../utils/replacePlaceholder";
 
-export const makeRaw = (command: string) => ({raw: command})
+export class AstroService extends BaseFrameworkService  implements FrameworkService {
 
-export class AstroService implements FrameworkService {
-  constructor(private packageManager: PackageManager) {
+
+  constructor(packageManager: PackageManager) {
+    super(packageManager);
   }
 
   async initializeProject(name: string) {
@@ -20,27 +21,17 @@ export class AstroService implements FrameworkService {
     await childProc.exited;
   }
 
-  async installAdditionalDependencies() {
+  async postCreateActions() {
     let astroAddVercel = this.packageManager.npx('astro', 'add vercel --yes');
     await $`${makeRaw(astroAddVercel)}`
   }
 
   async addTestingFrameworks(path: string) {
-    await $`${makeRaw(this.packageManager.installDevDependency('vitest'))}`
-    await $`${makeRaw(this.packageManager.installDevDependency('@playwright/test'))}`
-    await $`${makeRaw(this.packageManager.installDevDependency('@types/node'))}`
-    const scripts = {
-      "test": "vitest",
-      "test:e2e": this.packageManager.npx('playwright', 'test'),
-      "test:e2e:ui": this.packageManager.npx('playwright', 'test --ui'),
-    }
-    const packageJsonFile = Bun.file(`${path}/package.json`, {type: "application/json"});
-    let packageJson = await packageJsonFile.json();
-    packageJson.scripts = {...packageJson.scripts, ...scripts};
-    await Bun.write(`${path}/package.json`, JSON.stringify(packageJson, null, 2));
+    await super.addTestingFrameworks(path);
   }
 
   replacePlaceholders(projectPath: string) {
     replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, 'Astro')
+    replacePlaceholder(`${projectPath}/playwright.config.ts`, '4321')
   }
 }

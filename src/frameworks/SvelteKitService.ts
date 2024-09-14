@@ -1,13 +1,11 @@
-import type {FrameworkService} from "./FrameworkService";
+import {BaseFrameworkService, type FrameworkService, makeRaw} from "./FrameworkService";
 import {$, spawn} from "bun";
 import type {PackageManager} from "../utils/PackageManager";
-import {makeRaw} from "./AstroService";
+import {replacePlaceholder} from "../utils/replacePlaceholder";
 
-export class SvelteKitService implements FrameworkService {
-  private packageManager: PackageManager;
-
+export class SvelteKitService extends BaseFrameworkService implements FrameworkService {
   constructor(packageManager: PackageManager) {
-    this.packageManager = packageManager;
+    super(packageManager);
   }
 
   async initializeProject(name: string) {
@@ -21,27 +19,16 @@ export class SvelteKitService implements FrameworkService {
     await childProc.exited;
   }
 
-  async addTestingFrameworks(path: string) {
-    await $`${makeRaw(this.packageManager.installDevDependency('vitest'))}`
-    await $`${makeRaw(this.packageManager.installDevDependency('@playwright/test'))}`
-    await $`${makeRaw(this.packageManager.installDevDependency('@types/node'))}`
-    const scripts = {
-      "test": "vitest",
-      "test:e2e": this.packageManager.npx('playwright', 'test'),
-      "test:e2e:ui": this.packageManager.npx('playwright', 'test --ui'),
-    }
-    const packageJsonFile = Bun.file(`${path}/package.json`, {type: "application/json"});
-    let packageJson = await packageJsonFile.json();
-    packageJson.scripts = {...packageJson.scripts, ...scripts};
-    await Bun.write(`${path}/package.json`, JSON.stringify(packageJson, null, 2));
+  async addTestingFrameworks(path: string): Promise<void> {
+    await super.addTestingFrameworks(path);
   }
 
   replacePlaceholders(projectPath: string) {
-
+    replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, 'Home')
+    replacePlaceholder(`${projectPath}/playwright.config.ts`, '5173')
   }
 
-  async installAdditionalDependencies() {
+  async postCreateActions() {
     await $`${makeRaw(`${this.packageManager.name} install`)}`;
   }
-
 }

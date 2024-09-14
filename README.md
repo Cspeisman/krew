@@ -3,7 +3,7 @@
 A CLI tool to quickly scaffold your project's infrastructure. It streamlines the setup process by automating the creation of GitHub repositories, Vercel deployments, and CI/CD pipelines.
 
 ## Features
-- ✅ Supports popular frameworks: astro, remix, and nextjs
+- ✅ Supports popular frameworks: astro, remix, nextjs, and sveltekit
 - ✅ Initializes a GitHub repository
 - ✅ Deploys the application to Vercel (supports astro by default)
 - ✅ Sets up GitHub Actions for CI/CD
@@ -22,11 +22,11 @@ npm create krew@latest your-project-name -- --framework astro
 
 May be provided in place of prompts
 
-| Name                      | Description                                                                                                                           |
-|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
-| `--help` (`-h`)           | Display available flags.                                                                                                              |
-| `--framework <framework>` | Specify your framework of choice (options: `astro`/`remix`/`nextjs`)                                                                  |
-| `--destroy`               | Tears down the entire application. Deletes github repository<br/> and deletes vercel project. CAUTION: THIS IS IRREVERSIBLE           |
+| Name                      | Description                                                                                                                 |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------|
+| `--help` (`-h`)           | Display available flags.                                                                                                    |
+| `--framework <framework>` | Specify your framework of choice (options: `astro`/`remix`/`nextjs`/`svelte`)                                               |
+| `--destroy`               | Tears down the entire application. Deletes github repository<br/> and deletes vercel project. CAUTION: THIS IS IRREVERSIBLE |
 
 
 ## What it does
