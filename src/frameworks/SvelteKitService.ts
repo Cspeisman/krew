@@ -24,7 +24,7 @@ export class SvelteKitService extends BaseFrameworkService implements FrameworkS
   }
 
   replacePlaceholders(projectPath: string) {
-    replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, 'Home')
+    replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, '')
     replacePlaceholder(`${projectPath}/playwright.config.ts`, '5173')
   }
 

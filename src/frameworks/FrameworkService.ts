@@ -9,7 +9,7 @@ export interface FrameworkService {
 
   replacePlaceholders: (projectPath: string) => void;
 
-  postCreateActions?: () => Promise<void>
+  postCreateActions?: (opt?: Record<string, string>) => Promise<void>
 }
 
 export class BaseFrameworkService {

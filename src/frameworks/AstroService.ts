@@ -3,7 +3,7 @@ import {$, spawn} from "bun";
 import {BaseFrameworkService, type FrameworkService, makeRaw} from "./FrameworkService";
 import {replacePlaceholder} from "../utils/replacePlaceholder";
 
-export class AstroService extends BaseFrameworkService  implements FrameworkService {
+export class AstroService extends BaseFrameworkService implements FrameworkService {
 
 
   constructor(packageManager: PackageManager) {
@@ -21,9 +21,11 @@ export class AstroService extends BaseFrameworkService  implements FrameworkServ
     await childProc.exited;
   }
 
-  async postCreateActions() {
-    let astroAddVercel = this.packageManager.npx('astro', 'add vercel --yes');
-    await $`${makeRaw(astroAddVercel)}`
+  async postCreateActions(opts?: Record<string, string>) {
+    if (opts?.platform && opts.platform === 'vercel') {
+      let astroAddVercel = this.packageManager.npx('astro', 'add vercel --yes');
+      await $`${makeRaw(astroAddVercel)}`
+    }
   }
 
   async addTestingFrameworks(path: string) {

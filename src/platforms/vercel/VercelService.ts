@@ -1,7 +1,9 @@
 import {type BunFile, spawn} from 'bun';
 import * as os from "node:os";
+import type {PlatformService} from "../PlatformService.ts";
 
-export class VercelService {
+export class VercelService implements PlatformService {
+
   token?: string;
   baseUrl = 'https://api.vercel.com';
   projectId: string | null = null;
@@ -19,7 +21,7 @@ export class VercelService {
     }
   }
 
-  async createProject(name: string, repo: string, framework: string) {
+  async createProject(name: string, repo?: string, framework?: string) {
     const response = await fetch(`${this.baseUrl}/v10/projects`, {
       headers: this.getHeaders(),
       method: "post",
@@ -133,4 +135,24 @@ export class VercelService {
       await this.deleteProject();
     }
   }
+
+  async getActionSecrets () {
+    const projectBypassSecret = await this.bypassAutomationProtection();
+    return [
+      {
+        secretName: 'VERCEL_ORG_ID',
+        secretValue: this.orgId ?? ''
+      },
+      {
+        secretName: 'VERCEL_PROJECT_ID',
+        secretValue: this.projectId ?? ''
+      }, {
+        secretName: 'VERCEL_TOKEN',
+        secretValue: this.token ?? ''
+      }, {
+        secretName: 'VERCEL_AUTOMATION_BYPASS_SECRET',
+        secretValue: projectBypassSecret ?? ''
+      }
+    ]
+  };
 }

@@ -24,7 +24,7 @@ export class GithubService {
     await open(`https://github.com/login/oauth/authorize?client_id=Ov23lig6LGrVOCr4N9tk&redirect_uri=http://localhost:8080/callback&scope=${scopes}`);
     await node.exited;
 
-    const resp = await fetch('https://krew-auth-service.vercel.app/api/auth', {
+    const resp = await fetch('https://krew-auth-service.fly.dev/api/auth', {
       method: 'POST',
       body: JSON.stringify({code})
     });

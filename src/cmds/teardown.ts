@@ -1,4 +1,4 @@
-import {VercelService} from "../vercel/VercelService.ts";
+import {VercelService} from "../platforms/vercel/VercelService.ts";
 import {GithubService} from "../github/GithubService.ts";
 
 export async function teardown() {

@@ -5,3 +5,5 @@
     - [X] next.js
     - [X] sveltekit
     - [ ] solidstart
+- [ ] Add support for Fly.io
+- [ ] Add support to for netlify?
