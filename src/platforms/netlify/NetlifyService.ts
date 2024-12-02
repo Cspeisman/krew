@@ -44,13 +44,18 @@ export class NetlifyService implements PlatformService {
   }
 
   async createProject(name: string) {
+    let pwd = (await $`pwd`).text().trim();
     if (!this.token) {
       return;
     }
+
     if (!this.siteId) {
-      await this.netlifyInit(name);
+      await this.netlifyInit(name, pwd);
     }
-    const childProc = spawn(['npx', 'netlify', 'deploy', '--prod', '-a', this.token, '--site', name, '--build', '--json'], {
+
+    console.log('deploying first build to netlify....');
+    const childProc = spawn(['npx', 'netlify', 'deploy', '--prod', '-a', this.token, '--site', this.siteId!, '--build'], {
+      cwd: pwd,
       stdin: "inherit",
       stdout: "inherit",
     });
@@ -69,8 +74,7 @@ export class NetlifyService implements PlatformService {
     return null;
   }
 
-  async netlifyInit(name: string) {
-    let pwd = (await $`pwd`).text().trim();
+  async netlifyInit(name: string, pwd: string) {
     const childProc = spawn(['npx', 'netlify', 'sites:create', '--name', name], {
       cwd: pwd,
       stdin: "inherit",

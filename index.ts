@@ -3,8 +3,6 @@ import {teardown} from "./src/cmds/teardown";
 import {getArgValue, help} from "./src/utils/cliHelpers";
 import {createSelection} from "bun-promptx";
 import {setup} from "./src/cmds/setup";
-import {NetlifyService} from "./src/platforms/netlify/NetlifyService.ts";
-import {$} from "bun";
 
 const hasDestroyFlag = Bun.argv.includes("--destroy");
 const hasHelpFlag = Bun.argv.includes("-h") || Bun.argv.includes("--h");
