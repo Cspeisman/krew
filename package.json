@@ -2,7 +2,7 @@
   "name": "create-krew",
   "module": "index.ts",
   "type": "module",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "bin": {
     "create-krew": "./index.ts"
   },
@@ -32,4 +32,3 @@
   "author": "cspeisman <cspeisman@gmail.com>",
   "license": "MIT"
 }
-nj
