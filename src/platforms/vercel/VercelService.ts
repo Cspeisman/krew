@@ -1,8 +1,17 @@
-import {type BunFile, spawn} from 'bun';
+import * as Bun from 'bun';
+import {$, type BunFile, fetch, spawn} from 'bun';
 import * as os from "node:os";
 import type {PlatformService} from "../PlatformService.ts";
+import type {PackageManager} from "../../utils/PackageManager.ts";
+import * as console from "node:console";
+import {makeRaw} from "../../frameworks/FrameworkService.ts";
 
 export class VercelService implements PlatformService {
+  packageManager: PackageManager;
+
+  constructor(packageManager: PackageManager) {
+    this.packageManager = packageManager;
+  }
 
   token?: string;
   baseUrl = 'https://api.vercel.com';
@@ -38,6 +47,9 @@ export class VercelService implements PlatformService {
     const body = await response.json();
     this.projectId = (body as {id: string}).id;
     this.orgId = (body as {accountId: string}).accountId;
+
+    let astroAddVercel = this.packageManager.npx('astro', 'add vercel --yes');
+    await $`${makeRaw(astroAddVercel)}`
   };
 
   async getProjectDomain() {

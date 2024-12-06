@@ -24,9 +24,9 @@ export const setup = async (name: string, framework?: string, platform?: string)
   } else {
     frameworkService = new AstroService(packageManager);
   }
-  let platformService: PlatformService = new VercelService();
+  let platformService: PlatformService = new VercelService(packageManager);
   if (platform && platform === 'netlify') {
-    platformService = new NetlifyService();
+    platformService = new NetlifyService(packageManager);
   }
 
   let githubService = new GithubService();
@@ -41,7 +41,7 @@ export const setup = async (name: string, framework?: string, platform?: string)
   $.cwd(name);
 
   if (frameworkService.postCreateActions) {
-    await frameworkService.postCreateActions({platform: platform ?? ''});
+    await frameworkService.postCreateActions();
   }
   await frameworkService.addTestingFrameworks(`${process.cwd()}/${name}`);
   await githubService.createRepo(name);
@@ -51,9 +51,8 @@ export const setup = async (name: string, framework?: string, platform?: string)
   if (!platformService.token) {
     console.error('error: sorry we had trouble finding the token to call vercel')
   } else {
-    // await platformService.createProject(name, `${githubService.username}/${name}`, framework ?? 'astro')
-    await platformService.createProject(name)
     await $`rsync -a ${import.meta.dir}/../platforms/${platform}/templates/ ./`;
+    await platformService.createProject(name, `${githubService.username}/${name}`, framework ?? 'astro')
     frameworkService.replacePlaceholders(`${process.cwd()}/${name}`);
     let actionSecrets = await platformService.getActionSecrets();
     await githubService.createSecrets(name, actionSecrets);

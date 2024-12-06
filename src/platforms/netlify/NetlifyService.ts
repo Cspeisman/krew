@@ -1,8 +1,18 @@
+import * as Bun from "bun";
 import {$, type BunFile, spawn} from "bun";
 import * as os from "node:os";
 import type {PlatformService} from "../PlatformService.ts";
+import type {PackageManager} from "../../utils/PackageManager.ts";
+import * as console from "node:console";
+import {makeRaw} from "../../frameworks/FrameworkService.ts";
 
 export class NetlifyService implements PlatformService {
+  packageManager: PackageManager;
+
+  constructor(packageManager: PackageManager) {
+    this.packageManager = packageManager;
+  }
+
   token?: string;
   siteId?: string;
   tokenPaths: string[] = [`${os.homedir()}/Library/Preferences/netlify/config.json`, `${os.homedir()}/.config/netlify/config.json`];
@@ -75,6 +85,7 @@ export class NetlifyService implements PlatformService {
   }
 
   async netlifyInit(name: string, pwd: string) {
+    await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
     const childProc = spawn(['npx', 'netlify', 'sites:create', '--name', name], {
       cwd: pwd,
       stdin: "inherit",
