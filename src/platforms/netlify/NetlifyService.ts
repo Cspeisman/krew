@@ -19,6 +19,7 @@ export class NetlifyService implements PlatformService {
 
   login = async () => {
     if (!(await this.authExists(this.tokenPaths))) {
+      await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
       const childProc = spawn(['npx', 'netlify', 'login'], {
         stdin: "inherit",
         stdout: "inherit",
@@ -85,7 +86,6 @@ export class NetlifyService implements PlatformService {
   }
 
   async netlifyInit(name: string, pwd: string) {
-    await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
     const childProc = spawn(['npx', 'netlify', 'sites:create', '--name', name], {
       cwd: pwd,
       stdin: "inherit",
