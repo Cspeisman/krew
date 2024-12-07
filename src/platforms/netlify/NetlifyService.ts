@@ -2,7 +2,7 @@ import * as Bun from "bun";
 import {$, type BunFile, spawn} from "bun";
 import * as os from "node:os";
 import type {PlatformService} from "../PlatformService.ts";
-import type {PackageManager} from "../../utils/PackageManager.ts";
+import {checkPackage, type PackageManager} from "../../utils/PackageManager.ts";
 import * as console from "node:console";
 import {makeRaw} from "../../frameworks/FrameworkService.ts";
 
@@ -18,8 +18,8 @@ export class NetlifyService implements PlatformService {
   tokenPaths: string[] = [`${os.homedir()}/Library/Preferences/netlify/config.json`, `${os.homedir()}/.config/netlify/config.json`];
 
   login = async () => {
+    await this.checkOrInstallCliTool();
     if (!(await this.authExists(this.tokenPaths))) {
-      await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
       const childProc = spawn(['npx', 'netlify', 'login'], {
         stdin: "inherit",
         stdout: "inherit",
@@ -97,5 +97,11 @@ export class NetlifyService implements PlatformService {
     await file.exists();
     const json = await file.json()
     this.siteId = json.siteId;
+  }
+
+  private async checkOrInstallCliTool() {
+    if (!checkPackage('netlify-cli')) {
+      await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
+    }
   }
 }

@@ -1,3 +1,7 @@
+import * as fs from "node:fs";
+import * as path from "node:path";
+import {readFileSync} from "fs";
+
 export interface PackageManager {
   name: 'npm' | 'yarn' | 'pnpm';
 
@@ -66,4 +70,21 @@ export function determinePackageManager(): PackageManager {
     return new NPM();
   }
   return new NPM();
+}
+
+export function checkPackage(packageName: string) {
+  // Check in node_modules
+    try {
+      let packageJsonPath: string = fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8');
+      const packageJson = JSON.parse(packageJsonPath);
+
+      const deps = {
+        ...packageJson.dependencies,
+        ...packageJson.devDependencies
+      };
+
+      return !!deps[packageName];
+    } catch (err) {
+      return false;
+    }
 }
