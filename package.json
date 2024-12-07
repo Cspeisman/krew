@@ -2,7 +2,7 @@
   "name": "create-krew",
   "module": "index.ts",
   "type": "module",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "bin": {
     "create-krew": "./index.ts"
   },

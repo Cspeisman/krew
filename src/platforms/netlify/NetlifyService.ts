@@ -1,10 +1,10 @@
 import * as Bun from "bun";
 import {$, type BunFile, spawn} from "bun";
 import * as os from "node:os";
-import type {PlatformService} from "../PlatformService.ts";
-import {checkPackage, type PackageManager} from "../../utils/PackageManager.ts";
+import type {PlatformService} from "../PlatformService";
+import {checkPackage, type PackageManager} from "../../utils/PackageManager";
 import * as console from "node:console";
-import {makeRaw} from "../../frameworks/FrameworkService.ts";
+import {makeRaw} from "../../frameworks/FrameworkService";
 
 export class NetlifyService implements PlatformService {
   packageManager: PackageManager;
@@ -101,6 +101,7 @@ export class NetlifyService implements PlatformService {
 
   private async checkOrInstallCliTool() {
     if (!checkPackage('netlify-cli')) {
+      console.log('installing netlify cli');
       await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
     }
   }

@@ -9,8 +9,8 @@ import {AstroService} from "../frameworks/AstroService";
 import type {FrameworkService} from "../frameworks/FrameworkService";
 import {NextjsService} from "../frameworks/NextjsService";
 import {SvelteKitService} from "../frameworks/SvelteKitService";
-import type {PlatformService} from "../platforms/PlatformService.ts";
-import {NetlifyService} from "../platforms/netlify/NetlifyService.ts";
+import type {PlatformService} from "../platforms/PlatformService";
+import {NetlifyService} from "../platforms/netlify/NetlifyService";
 
 export const setup = async (name: string, framework?: string, platform?: string) => {
   const packageManager = determinePackageManager();
