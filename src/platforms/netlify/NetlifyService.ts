@@ -18,9 +18,12 @@ export class NetlifyService implements PlatformService {
   tokenPaths: string[] = [`${os.homedir()}/Library/Preferences/netlify/config.json`, `${os.homedir()}/.config/netlify/config.json`];
 
   login = async () => {
+    const result = await $`pwd`.quiet();
+    const path = result.text().trim()
     await this.checkOrInstallCliTool();
     if (!(await this.authExists(this.tokenPaths))) {
       const childProc = spawn(['npx', 'netlify', 'login'], {
+        cwd: path,
         stdin: "inherit",
         stdout: "inherit",
       });
@@ -50,12 +53,15 @@ export class NetlifyService implements PlatformService {
 
   async getTokenFromFile(file: BunFile) {
     let json = await file.json();
-    // @ts-ignore
-    return Object.values(Object.values(json.users))[0].auth.token;
+    if (json.users) {
+      // @ts-ignore
+      return Object.values(Object.values(json.users))[0].auth.token;
+    }
+    return false;
   }
 
   async createProject(name: string) {
-    let pwd = (await $`pwd`).text().trim();
+    let pwd = (await $`pwd`.quiet()).text().trim();
     if (!this.token) {
       return;
     }
@@ -74,14 +80,14 @@ export class NetlifyService implements PlatformService {
     await childProc.exited
   }
 
-  async getActionSecrets(){
+  async getActionSecrets() {
     return Promise.resolve([{secretName: 'SITE_ID', secretValue: this.siteId ?? ''}, {
       secretName: 'NETLIFY_TOKEN',
       secretValue: this.token ?? ''
     }]);
   }
 
-  async getProjectDomain(){
+  async getProjectDomain() {
     return null;
   }
 
