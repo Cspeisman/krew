@@ -21,6 +21,7 @@ export class BaseFrameworkService {
 
   async addTestingFrameworks(path: string) {
     await $`${makeRaw(this.packageManager.installDevDependency('vitest'))}`
+    await $`${makeRaw(this.packageManager.installDevDependency('@testing-library/react'))}`
     await $`${makeRaw(this.packageManager.installDevDependency('@playwright/test'))}`
     await $`${makeRaw(this.packageManager.installDevDependency('@types/node'))}`
     const scripts = {
@@ -33,5 +34,4 @@ export class BaseFrameworkService {
     packageJson.scripts = {...packageJson.scripts, ...scripts};
     await Bun.write(`${path}/package.json`, JSON.stringify(packageJson, null, 2));
   }
-
 }

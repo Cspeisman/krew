@@ -24,6 +24,11 @@ export class AstroService extends BaseFrameworkService implements FrameworkServi
     await super.addTestingFrameworks(path);
   }
 
+  async postCreateActions() {
+    let addReact = this.packageManager.npx('astro', 'add react --yes');
+    await $`${makeRaw(addReact)}`
+  }
+
   replacePlaceholders(projectPath: string) {
     replacePlaceholder(`${projectPath}/e2e/example.spec.ts`, 'Astro')
     replacePlaceholder(`${projectPath}/playwright.config.ts`, '4321')

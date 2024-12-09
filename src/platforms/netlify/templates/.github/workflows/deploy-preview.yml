@@ -5,6 +5,13 @@ on:
     types: ['opened', 'edited', 'synchronize']
 
 jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run test
   deploy-preview:
     name: 'Deploy Preview'
     runs-on: ubuntu-latest

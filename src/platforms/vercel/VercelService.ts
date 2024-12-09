@@ -1,10 +1,9 @@
 import * as Bun from 'bun';
 import {$, type BunFile, fetch, spawn} from 'bun';
 import * as os from "node:os";
-import type {PlatformService} from "../PlatformService.ts";
-import type {PackageManager} from "../../utils/PackageManager.ts";
-import * as console from "node:console";
-import {makeRaw} from "../../frameworks/FrameworkService.ts";
+import type {PlatformService} from "../PlatformService";
+import type {PackageManager} from "../../utils/PackageManager";
+import {makeRaw} from "../../frameworks/FrameworkService";
 
 export class VercelService implements PlatformService {
   packageManager: PackageManager;
