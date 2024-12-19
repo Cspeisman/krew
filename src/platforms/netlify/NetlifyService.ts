@@ -78,6 +78,9 @@ export class NetlifyService implements PlatformService {
     });
 
     await childProc.exited
+
+    let astroAddVercel = this.packageManager.npx('astro', 'add netlify --yes');
+    await $`${makeRaw(astroAddVercel)}`
   }
 
   async getActionSecrets() {
