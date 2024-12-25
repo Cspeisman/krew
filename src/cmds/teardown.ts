@@ -12,7 +12,6 @@ export async function teardown() {
     for await (const line of console) {
       if (line.trim() === 'confirm') {
         let successfullyDeletedRepo = await githubService.delete(repoAndOwner);
-        console.log(successfullyDeletedRepo);
         if (successfullyDeletedRepo) {
           await vercelService.deleteProjectByName(repoAndOwner.repo);
         }

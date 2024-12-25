@@ -2,21 +2,21 @@ import * as Bun from 'bun';
 import {$, type BunFile, fetch, spawn} from 'bun';
 import * as os from "node:os";
 import type {PlatformService} from "../PlatformService";
-import type {PackageManager} from "../../utils/PackageManager";
+import {NPM, type PackageManager} from "../../utils/PackageManager";
 import {makeRaw} from "../../frameworks/FrameworkService";
 
 export class VercelService implements PlatformService {
   packageManager: PackageManager;
 
-  constructor(packageManager: PackageManager) {
-    this.packageManager = packageManager;
+  constructor(packageManager?: PackageManager) {
+    this.packageManager = packageManager ?? new NPM();
   }
 
   token?: string;
   baseUrl = 'https://api.vercel.com';
   projectId: string | null = null;
   orgId: string | null = null;
-  tokenPaths: string[] = [`${os.homedir()}/Library/Application\ Support/com.vercel.cli/auth.json`, `${os.homedir()}/.local/share/com.vercel.cli` ];
+  tokenPaths: string[] = [`${os.homedir()}/Library/Application\ Support/com.vercel.cli/auth.json`, `${os.homedir()}/.local/share/com.vercel.cli`];
 
   async login() {
     if (!(await this.authExists(this.tokenPaths))) {
@@ -44,8 +44,8 @@ export class VercelService implements PlatformService {
     });
 
     const body = await response.json();
-    this.projectId = (body as {id: string}).id;
-    this.orgId = (body as {accountId: string}).accountId;
+    this.projectId = (body as { id: string }).id;
+    this.orgId = (body as { accountId: string }).accountId;
 
     let astroAddVercel = this.packageManager.npx('astro', 'add vercel --yes');
     await $`${makeRaw(astroAddVercel)}`
@@ -56,12 +56,13 @@ export class VercelService implements PlatformService {
       method: 'GET',
       headers: this.getHeaders(),
     });
-    const body = await response.json() as {domains?: {name: string}[]};
+    const body = await response.json() as { domains?: { name: string }[] };
     if (body?.domains) {
       return `https://${body?.domains[0].name}`;
     }
     return null;
   }
+
   async deploy(name: string, url: string) {
     try {
       const response = await fetch("https://api.vercel.com/v13/deployments?forceNew=1&skipAutoDetectionConfirmation=1", {
@@ -92,6 +93,7 @@ export class VercelService implements PlatformService {
       });
       this.projectId = null;
     }
+    return true
   }
 
   private getHeaders() {
@@ -128,7 +130,7 @@ export class VercelService implements PlatformService {
       method: 'patch',
       body: JSON.stringify({})
     });
-    let bypassObject = await response.json() as {protectionBypass?: { [key: string]: object }};
+    let bypassObject = await response.json() as { protectionBypass?: { [key: string]: object } };
     if (bypassObject && bypassObject.protectionBypass) {
       return Object.keys(bypassObject.protectionBypass)[0]
     }
@@ -140,14 +142,14 @@ export class VercelService implements PlatformService {
     const response = await fetch(`https://api.vercel.com/v9/projects/${name}`, {
       headers: this.getHeaders(),
     });
-    const project = await response.json() as {id: string};
+    const project = await response.json() as { id: string };
     if ('id' in project) {
       this.projectId = project.id as string;
       await this.deleteProject();
     }
   }
 
-  async getActionSecrets () {
+  async getActionSecrets() {
     const projectBypassSecret = await this.bypassAutomationProtection();
     return [
       {

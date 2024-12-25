@@ -2,9 +2,10 @@
   "name": "create-krew",
   "module": "index.ts",
   "type": "module",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "bin": {
-    "create-krew": "./index.ts"
+    "create-krew": "./index.ts",
+    "krew": "./index.ts"
   },
   "scripts": {
     "start": "bun run index.ts",
@@ -18,7 +19,7 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^7.7.2",
-    "bun": "^1.1.24",
+    "bun": "1.1.30",
     "bun-promptx": "^0.2.0",
     "chalk": "^5.3.0",
     "libsodium-wrappers": "^0.7.14",

@@ -2,15 +2,25 @@ import * as Bun from "bun";
 import {$, type BunFile, spawn} from "bun";
 import * as os from "node:os";
 import type {PlatformService} from "../PlatformService";
-import {checkPackage, type PackageManager} from "../../utils/PackageManager";
+import {checkPackage, NPM, type PackageManager} from "../../utils/PackageManager";
 import * as console from "node:console";
 import {makeRaw} from "../../frameworks/FrameworkService";
 
 export class NetlifyService implements PlatformService {
   packageManager: PackageManager;
 
-  constructor(packageManager: PackageManager) {
-    this.packageManager = packageManager;
+  constructor(packageManager?: PackageManager) {
+    this.packageManager = packageManager ?? new NPM();
+  }
+
+  deleteProject = async () => {
+    const file = Bun.file('.netlify/state.json');
+    if (await file.exists() && file.type.includes('application/json')) {
+      const response = await $` netlify api deleteSite --data '{ "site_id": "${this.siteId}" }'`.json();
+      console.log(response)
+      return true;
+    }
+    return false;
   }
 
   token?: string;

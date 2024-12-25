@@ -1,6 +1,5 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import {readFileSync} from "fs";
 
 export interface PackageManager {
   name: 'npm' | 'yarn' | 'pnpm';
@@ -12,7 +11,7 @@ export interface PackageManager {
   installDevDependency(packageName: string): string;
 }
 
-class NPM implements PackageManager {
+export class NPM implements PackageManager {
   name: 'npm' = 'npm';
 
   create() {
