@@ -1,5 +1,5 @@
-import {VercelService} from "../platforms/vercel/VercelService.ts";
-import {GithubService} from "../github/GithubService.ts";
+import {VercelService} from "../platforms/vercel/VercelService";
+import {GithubService} from "../github/GithubService";
 
 export async function teardown() {
   let vercelService = new VercelService();
@@ -23,7 +23,7 @@ export async function teardown() {
         break;
       }
 
-      process.stdout.write(`Looks like you did confirm. Please type "confirm" to continue tearing down your project or N to quit: `);
+      process.stdout.write(`Looks like you didn't confirm. Please type "confirm" to continue tearing down your project or N to quit: `);
     }
   } catch (e) {
     console.error(e)

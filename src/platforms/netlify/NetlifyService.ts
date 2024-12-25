@@ -70,6 +70,9 @@ export class NetlifyService implements PlatformService {
       await this.netlifyInit(name, pwd);
     }
 
+    let astroAddNetlify = this.packageManager.npx('astro', 'add netlify --yes');
+    await $`${makeRaw(astroAddNetlify)}`
+
     console.log('deploying first build to netlify....');
     const childProc = spawn(['npx', 'netlify', 'deploy', '--prod', '-a', this.token, '--site', this.siteId!, '--build'], {
       cwd: pwd,
@@ -78,9 +81,6 @@ export class NetlifyService implements PlatformService {
     });
 
     await childProc.exited
-
-    let astroAddVercel = this.packageManager.npx('astro', 'add netlify --yes');
-    await $`${makeRaw(astroAddVercel)}`
   }
 
   async getActionSecrets() {
@@ -91,7 +91,12 @@ export class NetlifyService implements PlatformService {
   }
 
   async getProjectDomain() {
-    return null;
+    try {
+    const response = await $` netlify api getSite --data '{ "site_id": "${this.siteId}" }'`.json();
+    return response['url'];
+    } catch (e) {
+      return null;
+    }
   }
 
   async netlifyInit(name: string, pwd: string) {

@@ -59,10 +59,10 @@ export const setup = async (name: string, framework?: string, platform?: string)
     await githubService.push(name);
     console.log('Successfully setup application!');
     console.log(`You can see your application's deploy workflow running here: ${chalk.underline(githubService.getActionsUrl(name))}`)
-    const vercelURL = await platformService.getProjectDomain();
-    if (vercelURL) {
-      console.log(`Once the deploy workflow has completed, you can visit your application at ${chalk.underline(`https://${vercelURL}`)}`);
-      await githubService.updateRepoHomepage(name, `https://${vercelURL}`);
+    const siteUrl = await platformService.getProjectDomain();
+    if (siteUrl) {
+      console.log(`Once the deploy workflow has completed, you can visit your application at ${chalk.underline(siteUrl)}`);
+      await githubService.updateRepoHomepage(name, siteUrl);
     }
   }
 }

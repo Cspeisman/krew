@@ -58,7 +58,7 @@ export class VercelService implements PlatformService {
     });
     const body = await response.json() as {domains?: {name: string}[]};
     if (body?.domains) {
-      return body?.domains[0].name;
+      return `https://${body?.domains[0].name}`;
     }
     return null;
   }
