@@ -6,7 +6,7 @@ import {VercelService} from "../platforms/vercel/VercelService";
 import {RemixService} from "../frameworks/RemixService";
 import {GithubService} from "../github/GithubService";
 import {AstroService} from "../frameworks/AstroService";
-import type {FrameworkService} from "../frameworks/FrameworkService";
+import {type FrameworkService, makeRaw} from "../frameworks/FrameworkService";
 import {NextjsService} from "../frameworks/NextjsService";
 import {SvelteKitService} from "../frameworks/SvelteKitService";
 import type {PlatformService} from "../platforms/PlatformService";
@@ -39,6 +39,7 @@ export const setup = async (name: string, framework?: string, platform?: string)
 
   await frameworkService.initializeProject(name);
   $.cwd(name);
+  await $`${makeRaw(packageManager.installDevDependency('create-krew'))}`;
 
   if (frameworkService.postCreateActions) {
     await frameworkService.postCreateActions();
