@@ -1,8 +1,17 @@
 import {VercelService} from "../platforms/vercel/VercelService";
 import {GithubService} from "../github/GithubService";
+import type {PlatformService} from "../platforms/PlatformService";
+import {NetlifyService} from "../platforms/netlify/NetlifyService";
+
+async function getPlatformService(): Promise<PlatformService> {
+  if (await NetlifyService.isService()) {
+    return new NetlifyService();
+  }
+  return new VercelService();
+}
 
 export async function teardown() {
-  let vercelService = new VercelService();
+  let platformService = await getPlatformService();
   let githubService = new GithubService();
 
   try {
@@ -13,7 +22,7 @@ export async function teardown() {
       if (line.trim() === 'confirm') {
         let successfullyDeletedRepo = await githubService.delete(repoAndOwner);
         if (successfullyDeletedRepo) {
-          await vercelService.deleteProjectByName(repoAndOwner.repo);
+          await platformService.deleteProject(repoAndOwner.repo);
         }
         break;
       }

@@ -85,13 +85,16 @@ export class VercelService implements PlatformService {
     }
   }
 
-  async deleteProject() {
-    if (this.projectId) {
-      await fetch(`${this.baseUrl}/v9/projects/${this.projectId}`, {
+  async deleteProject(name?: string) {
+    if (!name) {
+      return false;
+    }
+    const projectId = await this.getProjectId(name);
+    if (projectId) {
+      await fetch(`${this.baseUrl}/v9/projects/${projectId}`, {
         headers: this.getHeaders(),
         method: "delete"
       });
-      this.projectId = null;
     }
     return true
   }
@@ -137,16 +140,16 @@ export class VercelService implements PlatformService {
     return null
   }
 
-  async deleteProjectByName(name: string) {
+  async getProjectId(name: string) {
     await this.login();
     const response = await fetch(`https://api.vercel.com/v9/projects/${name}`, {
       headers: this.getHeaders(),
     });
     const project = await response.json() as { id: string };
     if ('id' in project) {
-      this.projectId = project.id as string;
-      await this.deleteProject();
+      return project.id as string;
     }
+    return null;
   }
 
   async getActionSecrets() {

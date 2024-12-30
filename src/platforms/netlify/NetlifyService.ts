@@ -13,16 +13,6 @@ export class NetlifyService implements PlatformService {
     this.packageManager = packageManager ?? new NPM();
   }
 
-  deleteProject = async () => {
-    const file = Bun.file('.netlify/state.json');
-    if (await file.exists() && file.type.includes('application/json')) {
-      const response = await $` netlify api deleteSite --data '{ "site_id": "${this.siteId}" }'`.json();
-      console.log(response)
-      return true;
-    }
-    return false;
-  }
-
   token?: string;
   siteId?: string;
   tokenPaths: string[] = [`${os.homedir()}/Library/Preferences/netlify/config.json`, `${os.homedir()}/.config/netlify/config.json`];
@@ -123,10 +113,27 @@ export class NetlifyService implements PlatformService {
     this.siteId = json.siteId;
   }
 
+
+  deleteProject = async () => {
+    const file = Bun.file('.netlify/state.json');
+    if (file.type.includes('application/json')) {
+      const response = await $` netlify api deleteSite --data '{ "site_id": "${this.siteId}" }'`.json();
+      console.log(response)
+      return true;
+    }
+    return false;
+  }
+
   private async checkOrInstallCliTool() {
     if (!checkPackage('netlify-cli')) {
       console.log('installing netlify cli');
       await $`${makeRaw(this.packageManager.installDevDependency('netlify-cli'))}`
     }
+  }
+
+
+  static async isService() {
+    const file = Bun.file('.netlify/state.json');
+    return file.exists();
   }
 }

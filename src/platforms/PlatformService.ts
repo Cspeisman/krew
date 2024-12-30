@@ -6,5 +6,5 @@ export interface PlatformService {
   token?: string;
   getActionSecrets: () => Promise<{ secretName: string, secretValue: string }[]>;
   getProjectDomain: () => Promise<string | null>;
-  deleteProject: () => Promise<boolean>
+  deleteProject: (name?: string) => Promise<boolean>
 }
